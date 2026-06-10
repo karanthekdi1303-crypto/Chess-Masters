@@ -1,0 +1,6 @@
+{
+  "name": "Master Chess Pro",
+  "description": "Modern, professional chess game against AI or a friend with dark mode, deep analysis, and premium graphics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

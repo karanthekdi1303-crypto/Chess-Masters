@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>ChessJS Bridge</title>
+    <script src="chess.js"></script>
+    <script>
+        var chess = new Chess();
+
+        function resetGame() {
+            chess.reset();
+            return JSON.stringify(getGameState());
+        }
+
+        function loadFenString(fen) {
+            var success = chess.load(fen);
+            return JSON.stringify({ success: success, state: getGameState() });
+        }
+
+        function getValidMoves(square) {
+            var moves = chess.moves({ square: square, verbose: true });
+            return JSON.stringify(moves);
+        }
+
+        function getAllValidMoves() {
+            var moves = chess.moves({ verbose: true });
+            return JSON.stringify(moves);
+        }
+
+        function makeChessMove(fromSquare, toSquare, promotionPiece) {
+            var moveParam = { from: fromSquare, to: toSquare };
+            if (promotionPiece) {
+                moveParam.promotion = promotionPiece;
+            }
+            var result = chess.move(moveParam);
+            return JSON.stringify({
+                success: result !== null,
+                move: result,
+                state: getGameState()
+            });
+        }
+
+        function undoChessMove() {
+            var result = chess.undo();
+            return JSON.stringify({
+                success: result !== null,
+                move: result,
+                state: getGameState()
+            });
+        }
+
+        function getGameState() {
+            return {
+                fen: chess.fen(),
+                turn: chess.turn(), // 'w' or 'b'
+                isCheck: chess.in_check(),
+                isCheckmate: chess.in_checkmate(),
+                isStalemate: chess.in_stalemate(),
+                isDraw: chess.in_draw(),
+                isGameOver: chess.game_over(),
+                board: chess.board()
+            };
+        }
+    </script>
+</head>
+<body>
+</body>
+</html>
